@@ -25,7 +25,7 @@ This project is a very small and simple web application for browsing cars and ma
 
 ## Contributors
 
-- Wojciech Fabisiak
+- Wojciech Fabisiak (https://github.com/WojciechFabi)
 
 ## License
 
