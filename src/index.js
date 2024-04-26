@@ -4,88 +4,114 @@ const $formDiv = document.getElementById("formDiv");
 const $submit = document.getElementById("submit");
 const $thanksDiv = document.getElementById("thanksDiv");
 const $goBack = document.getElementById("goBack");
-const $oponyButton = document.getElementById("OponyBtn");
-const $gwarancjaButton = document.getElementById("GwarancjaBtn");
-const $oponyDiv = document.getElementById("OponyDiv");
-const $gwarancjaDiv = document.getElementById("GwarancjaDiv");
+const $tiresButton = document.getElementById("tiresBtn");
+const $warrancyButton = document.getElementById("warrancyBtn");
+const $tiresDiv = document.getElementById("tiresDiv");
+const $warrancyDiv = document.getElementById("warrancyDiv");
 const $form = document.getElementById("Form");
 const $leasing = document.getElementById("leasing");
-const $gotówka = document.getElementById("gotówka");
+const $cash = document.getElementById("cash");
 const $formInputName = document.getElementById("fullName");
 const $error = document.getElementById("formError");
 const $dateInput = document.getElementById("date");
 const $destinationInput = document.getElementById("destination");
-const $wybranyModel = document.getElementById("chosenModel");
-const $cenaCałkowita = document.getElementById("costFull");
+const $chosenModel = document.getElementById("chosenModel");
+const $costFull = document.getElementById("costFull");
 const $thanksText = document.getElementById("thanks");
 const $autoComingOn = document.getElementById("autoComingOn");
-const $Siano = document.getElementById("Siano");
+const $pln = document.getElementById("pln");
+const $header = document.getElementById("header");
+const $dateOption = document.getElementById("dateOption");
 
 $form.addEventListener("submit", (event) => {
   event.preventDefault();
   if (validateNameInput($formInputName.value.trim()) && validateInput()) {
     $formDiv.style.display = "none";
     $thanksDiv.style.display = "block";
+    addDataToLastPage();
+    $form.reset();
+    $error.style.display = "none";
+    localStorage.setItem("Currently Displayed Div", "ThanksDiv");
   } else {
     $error.style.display = "block";
   }
-  addDataToLastPage();
-  $form.reset();
+  return;
 });
 
-$goBack.addEventListener("click", () => {
+function goBack() {
   $carListDiv.style.display = "block";
   $formDiv.style.display = "none";
   $error.style.display = "none";
+  $thanksDiv.style.display = "none";
   $form.reset();
-  localStorage.setItem("Opony", "nie");
-  $oponyDiv.style.backgroundColor = "white";
-  $oponyButton.innerText = "+";
-  localStorage.setItem("Gwarancja", "nie");
-  $gwarancjaDiv.style.backgroundColor = "white";
-  $gwarancjaButton.innerText = "+";
-});
+  localStorage.setItem("Opony", "");
+  $tiresDiv.style.backgroundColor = "white";
+  $tiresButton.innerText = "+";
+  localStorage.setItem("Gwarancja", "");
+  $warrancyDiv.style.backgroundColor = "white";
+  $warrancyButton.innerText = "+";
+  localStorage.setItem("CarData", "");
+  localStorage.setItem("Imię i Nazwisko", "");
+  localStorage.setItem("Miejsce Odbioru", "");
+  localStorage.setItem("Leasing", "");
+  localStorage.setItem("Gotówka", "");
+  localStorage.setItem("Data Odbioru", "");
+  localStorage.setItem("Currently Displayed Div", "");
+  localStorage.setItem("Cena Końcowa", "");
+}
 
-$oponyButton.addEventListener("click", () => {
-  if ($oponyButton.innerText === "+") {
-    $oponyDiv.style.backgroundColor = "gray";
-    $oponyButton.innerText = "-";
-    localStorage.setItem("Opony", "tak");
+$goBack.addEventListener("click", goBack);
 
-    var absoluteCost = +$cenaCałkowita.innerText;
-    $cenaCałkowita.innerText = (absoluteCost + 3000).toString();
+$tiresButton.addEventListener("click", () => {
+  if ($tiresButton.innerText === "+") {
+    $tiresDiv.style.backgroundColor = "gray";
+    $tiresButton.innerText = "-";
+    localStorage.setItem("Opony", "Tak");
+    var absoluteCost = +$costFull.innerText;
+    $costFull.innerText = (absoluteCost + 3000).toString();
+    localStorage.setItem("Cena Końcowa", absoluteCost + 3000);
   } else {
-    $oponyDiv.style.backgroundColor = "white";
-    $oponyButton.innerText = "+";
-    localStorage.setItem("Opony", "nie");
-
-    var absoluteCost = +$cenaCałkowita.innerText;
-    $cenaCałkowita.innerText = (absoluteCost - 3000).toString();
+    $tiresDiv.style.backgroundColor = "white";
+    $tiresButton.innerText = "+";
+    localStorage.setItem("Opony", "");
+    var absoluteCost = +$costFull.innerText;
+    $costFull.innerText = (absoluteCost - 3000).toString();
+    localStorage.setItem("Cena Końcowa", absoluteCost - 3000);
   }
 });
 
-$gwarancjaButton.addEventListener("click", () => {
-  if ($gwarancjaButton.innerText === "+") {
-    $gwarancjaDiv.style.backgroundColor = "gray";
-    $gwarancjaButton.innerText = "-";
-    localStorage.setItem("Gwarancja", "tak");
-
-    var absoluteCost = +$cenaCałkowita.innerText;
-    $cenaCałkowita.innerText = (absoluteCost + 5000).toString();
+$warrancyButton.addEventListener("click", () => {
+  if ($warrancyButton.innerText === "+") {
+    $warrancyDiv.style.backgroundColor = "gray";
+    $warrancyButton.innerText = "-";
+    localStorage.setItem("Gwarancja", "Tak");
+    var absoluteCost = +$costFull.innerText;
+    $costFull.innerText = (absoluteCost + 5000).toString();
+    localStorage.setItem("Cena Końcowa", absoluteCost + 5000);
   } else {
-    $gwarancjaDiv.style.backgroundColor = "white";
-    $gwarancjaButton.innerText = "+";
-    localStorage.setItem("Gwarancja", "nie");
-
-    var absoluteCost = +$cenaCałkowita.innerText;
-    $cenaCałkowita.innerText = (absoluteCost - 5000).toString();
+    $warrancyDiv.style.backgroundColor = "white";
+    $warrancyButton.innerText = "+";
+    localStorage.setItem("Gwarancja", "");
+    var absoluteCost = +$costFull.innerText;
+    $costFull.innerText = (absoluteCost - 5000).toString();
+    localStorage.setItem("Cena Końcowa", absoluteCost - 5000);
   }
+});
+
+$leasing.addEventListener("click", () => {
+  localStorage.setItem("Leasing", "Tak");
+  localStorage.setItem("Gotówka", "");
+});
+
+$cash.addEventListener("click", () => {
+  localStorage.setItem("Gotówka", "Tak");
+  localStorage.setItem("Leasing", "");
 });
 
 function validateInput() {
   return (
-    ($leasing.checked || $gotówka.checked) &&
-    $dateInput.value !== "" &&
+    ($leasing.checked || $cash.checked) &&
+    $dateOption.parentElement.selectedIndex === 1 &&
     $destinationInput.value !== ""
   );
 }
@@ -180,7 +206,7 @@ var Cars = [
   },
   {
     img: "https://ireland.apollo.olxcdn.com/v1/files/8lk7u81b8e0x1-PL/image;s=1800x1200",
-    marka: "Fiar",
+    marka: "Fiat",
     model: "Punto",
     rocznik: 2009,
     przebieg: "300 000km",
@@ -208,13 +234,17 @@ var Cars = [
 ];
 
 function addDataToLastPage() {
-  $thanksText.innerText = $wybranyModel.innerText;
-  $autoComingOn.innerText = $dateInput.value;
-  $Siano.innerText =
-    $cenaCałkowita.innerText +
+  var currentCarData = JSON.parse(localStorage.getItem("CarData"));
+  $thanksText.innerText = `${currentCarData.marka} ${currentCarData.model}, ${currentCarData.rocznik} \n ${currentCarData.przebieg} ${currentCarData.moc}`;
+  $autoComingOn.innerText = localStorage.getItem("Data Odbioru");
+  $pln.innerText =
+    localStorage.getItem("Cena Końcowa").toString() +
     " PLNÓW" +
     " i zapłacisz" +
-    ($gotówka.checked ? " gotówką" : " poprzez leasing");
+    (localStorage.getItem("Gotówka") === "Tak"
+      ? " gotówką"
+      : " poprzez leasing");
+
   var imgLastPage = document.getElementById("lastPageImg");
   var imgPath = JSON.parse(localStorage.getItem("CarData"));
   imgLastPage.src = imgPath.img;
@@ -264,6 +294,7 @@ $carList.addEventListener("click", (e) => {
     e.target.nodeName === "P" ||
     e.target.nodeName === "IMG"
   ) {
+    localStorage.setItem("Currently Displayed Div", "FormDiv");
     $carListDiv.style.display = "none";
     $formDiv.style.display = "block";
     var listItem = e.target.closest("li");
@@ -273,12 +304,79 @@ $carList.addEventListener("click", (e) => {
       localStorage.setItem("CarData", JSON.stringify(Cars[index]));
     }
 
-    if (localStorage.getItem("CarData") !== null) {
+    if (localStorage.getItem("CarData") !== "") {
       var currentCarData = JSON.parse(localStorage.getItem("CarData"));
-      $cenaCałkowita.innerText = currentCarData.cena.toString();
-      $wybranyModel.innerText = `${currentCarData.marka} ${currentCarData.model}, ${currentCarData.rocznik} \n ${currentCarData.przebieg} ${currentCarData.moc}`;
+      $costFull.innerText = currentCarData.cena.toString();
+      localStorage.setItem("Cena Końcowa", $costFull.innerText);
+      $chosenModel.innerText = `${currentCarData.marka} ${currentCarData.model}, ${currentCarData.rocznik} \n ${currentCarData.przebieg} ${currentCarData.moc}`;
     }
   }
 });
 
+function createPickupDate() {
+  let today = new Date();
+  var twoWeeksFromNow = new Date(today);
+  twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
+  $dateOption.value = twoWeeksFromNow.toISOString().split("T")[0];
+  $dateOption.innerText = twoWeeksFromNow.toDateString();
+}
+
+$formInputName.addEventListener("change", () => {
+  localStorage.setItem("Imię i Nazwisko", $formInputName.value);
+});
+$destinationInput.addEventListener("change", () => {
+  localStorage.setItem("Miejsce Odbioru", $destinationInput.value);
+});
+$dateInput.addEventListener("change", () => {
+  localStorage.setItem("Data Odbioru", $dateInput.value);
+});
+
+function showSectionOnReloadPage() {
+  var currentCarData = JSON.parse(localStorage.getItem("CarData"));
+  switch (localStorage.getItem("Currently Displayed Div")) {
+    case "FormDiv":
+      $carListDiv.style.display = "none";
+      $formDiv.style.display = "block";
+      localStorage.getItem("Imię i Nazwisko") !== ""
+        ? ($formInputName.value = localStorage.getItem("Imię i Nazwisko"))
+        : ($formInputName.value = "");
+      localStorage.getItem("Miejsce Odbioru") !== ""
+        ? ($destinationInput.value = localStorage.getItem("Miejsce Odbioru"))
+        : ($destinationInput.value = "");
+      localStorage.getItem("Data Odbioru") !== ""
+        ? ($dateInput.value = localStorage.getItem("Data Odbioru"))
+        : ($dateInput.value = "");
+      $leasing.checked = localStorage.getItem("Leasing") === "Tak";
+      $cash.checked = localStorage.getItem("Gotówka") === "Tak";
+      $tiresDiv.style.backgroundColor =
+        localStorage.getItem("Opony") === "Tak" ? "gray" : "white";
+      $tiresButton.innerText =
+        localStorage.getItem("Opony") === "Tak" ? "-" : "+";
+      $warrancyDiv.style.backgroundColor =
+        localStorage.getItem("Gwarancja") === "Tak" ? "gray" : "white";
+      $warrancyButton.innerText =
+        localStorage.getItem("Gwarancja") === "Tak" ? "-" : "+";
+      localStorage.getItem("Cena Końcowa") !== ""
+        ? ($costFull.innerText = localStorage.getItem("Cena Końcowa"))
+        : ($costFull.innerText = "");
+      $chosenModel.innerText = `${currentCarData.marka} ${currentCarData.model}, ${currentCarData.rocznik} \n ${currentCarData.przebieg} ${currentCarData.moc}`;
+      break;
+    case "ThanksDiv":
+      $carListDiv.style.display = "none";
+      $formDiv.style.display = "none";
+      $thanksDiv.style.display = "block";
+      addDataToLastPage();
+      break;
+    default:
+      $carListDiv.style.display = "block";
+      $formDiv.style.display = "none";
+      $thanksDiv.style.display = "none";
+  }
+}
+
+$header.addEventListener("click", goBack);
+
+createPickupDate();
 appendCarList();
+
+window.addEventListener("load", showSectionOnReloadPage);

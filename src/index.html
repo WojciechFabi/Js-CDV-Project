@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="main.css" />
   </head>
   <body>
-    <header>
-      <div>OTOAUTO.PL :D</div>
+    <header id="header">
+      <div>Samochodzik.pl</div>
     </header>
     <div class="col-sm-12" id="carListDiv">
       <div class="col-sm-6">
@@ -30,8 +30,8 @@
           <input type="radio" name="formaPłatności" id="leasing" />
           <label for="leasing">Leasing</label>
           <br />
-          <input type="radio" name="formaPłatności" id="gotówka" />
-          <label for="gotówka">Gotówka</label>
+          <input type="radio" name="formaPłatności" id="cash" />
+          <label for="cash">Gotówka</label>
           <div id="PLN">
             <p>Cena całkowita:</p>
             <p id="costFull"></p>
@@ -44,32 +44,37 @@
         </div>
         <hr />
         <div class="col">
-          <label for="fullName">Imię i Nazwisko</label>
-          <input type="text" name="fullName" id="fullName" />
+          <div>
+            <label for="fullName">Imię i Nazwisko</label>
+            <input type="text" name="fullName" id="fullName" />
+          </div>
           <br />
-          <label for="destination">Miejsce Odbioru</label>
-          <input type="text" name="destination" id="destination" />
+          <div>
+            <label for="destination">Miejsce Odbioru</label>
+            <input type="text" name="destination" id="destination" />
+          </div>
+
           <br />
-          <!-- tutaj zamiast inputu typu Date wpierdol tag select - 
-            <select>
-              <option></option>
-              <option></option>
-          </select> -->
-          <label for="destination">Data Odbioru</label>
-          <input type="date" name="date" id="date" />
+          <div>
+            <label for="date">Data Odbioru</label>
+            <select name="date" id="date">
+              <option type="date" value=""></option>
+              <option id="dateOption" value=""></option>
+            </select>
+          </div>
         </div>
         <div class="col">
           <hr />
           <h1>Akcesoria</h1>
 
           <div class="accessory">
-            <p id="OponyDiv">Opony Zimowe 3000 zł</p>
-            <button class="addAccessory" type="button" id="OponyBtn">+</button>
+            <p id="tiresDiv">Opony Zimowe 3000 zł</p>
+            <button class="addAccessory" type="button" id="tiresBtn">+</button>
           </div>
 
           <div class="accessory">
-            <p id="GwarancjaDiv">Dodatkowy Rok Gwarancji 5000 zł</p>
-            <button class="addAccessory" type="button" id="GwarancjaBtn">
+            <p id="warrancyDiv">Dodatkowy Rok Gwarancji 5000 zł</p>
+            <button class="addAccessory" type="button" id="warrancyBtn">
               +
             </button>
           </div>
@@ -84,18 +89,20 @@
     </div>
     <div id="thanksDiv" style="display: none">
       <h1>
+        <img src="" alt="" id="lastPageImg" />
         Dziękujemy za zakup
         <p id="thanks"></p>
       </h1>
+      <hr />
       <h1>
         Auto zostanie dostarczone
         <p id="autoComingOn"></p>
       </h1>
+      <hr />
       <h1>
         Wydasz na to
-        <p id="Siano"></p>
+        <p id="pln"></p>
       </h1>
-      <img src="" alt="" id="lastPageImg" />
     </div>
   </body>
 </html>
