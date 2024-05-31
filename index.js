@@ -31,11 +31,61 @@ $form.addEventListener("submit", (event) => {
     addDataToLastPage();
     $form.reset();
     $error.style.display = "none";
-    localStorage.setItem("Currently Displayed Div", "ThanksDiv");
+    localStorage.setItem("currentlyDisplayedDiv", "thanksDiv");
+
+    let errorMsg = "";
+    $error.innerText = errorMsg;
   } else {
     $error.style.display = "block";
+
+    let errors = [];
+
+    let paymentOption = document.querySelector(
+      'input[name="paymentOption"]:checked'
+    );
+    let fullName = $formInputName.value.trim();
+    let destination = $destinationInput.value.trim();
+    let date = $dateInput.value;
+
+    if (!paymentOption) {
+      errors.push("paymentOption");
+    }
+    if (!validateNameInput(fullName)) {
+      errors.push("fullName");
+    }
+    if (!destination) {
+      errors.push("destination");
+    }
+    if (!date) {
+      errors.push("date");
+    }
+
+    let errorMsg = "";
+    errors.forEach(function (error) {
+      switch (error) {
+        case "paymentOption":
+          errorMsg += "Proszę wybrać opcję płatności\n";
+          break;
+        case "fullName":
+          errorMsg +=
+            "Proszę poprawnie wpisać imię i nazwisko (imię + spacja + nazwisko)\n";
+          break;
+        case "destination":
+          errorMsg += "Proszę podać miejsce odbioru\n";
+          break;
+        case "date":
+          errorMsg += "Proszę wybrać datę odbioru\n";
+          break;
+        default:
+          errorMsg += "Źle wypełniony formularz\n";
+      }
+    });
+
+    if (errors.length > 0) {
+      $error.style.display = "block";
+      $error.innerText = errorMsg;
+    }
   }
-  return;
 });
 
 function goBack() {
@@ -44,68 +94,68 @@ function goBack() {
   $error.style.display = "none";
   $thanksDiv.style.display = "none";
   $form.reset();
-  localStorage.setItem("Opony", "");
+  localStorage.setItem("tires", "");
   $tiresDiv.style.backgroundColor = "white";
   $tiresButton.innerText = "+";
-  localStorage.setItem("Gwarancja", "");
+  localStorage.setItem("warrancy", "");
   $warrancyDiv.style.backgroundColor = "white";
   $warrancyButton.innerText = "+";
-  localStorage.setItem("CarData", "");
-  localStorage.setItem("Imię i Nazwisko", "");
-  localStorage.setItem("Miejsce Odbioru", "");
-  localStorage.setItem("Leasing", "");
-  localStorage.setItem("Gotówka", "");
-  localStorage.setItem("Data Odbioru", "");
-  localStorage.setItem("Currently Displayed Div", "");
-  localStorage.setItem("Cena Końcowa", "");
+  localStorage.setItem("carData", "");
+  localStorage.setItem("nameAndSurname", "");
+  localStorage.setItem("pickupLocation", "");
+  localStorage.setItem("leasing", "");
+  localStorage.setItem("cash", "");
+  localStorage.setItem("pickupDate", "");
+  localStorage.setItem("currentlyDisplayedDiv", "");
+  localStorage.setItem("finalPrice", "");
 }
 
 $goBack.addEventListener("click", goBack);
 
 $tiresButton.addEventListener("click", () => {
   if ($tiresButton.innerText === "+") {
-    $tiresDiv.style.backgroundColor = "gray";
+    $tiresDiv.style.backgroundColor = "grey";
     $tiresButton.innerText = "-";
-    localStorage.setItem("Opony", "Tak");
-    var absoluteCost = +$costFull.innerText;
+    localStorage.setItem("tires", "yes");
+    let absoluteCost = +$costFull.innerText;
     $costFull.innerText = (absoluteCost + 3000).toString();
-    localStorage.setItem("Cena Końcowa", absoluteCost + 3000);
+    localStorage.setItem("finalPrice", absoluteCost + 3000);
   } else {
     $tiresDiv.style.backgroundColor = "white";
     $tiresButton.innerText = "+";
-    localStorage.setItem("Opony", "");
-    var absoluteCost = +$costFull.innerText;
+    localStorage.setItem("tires", "");
+    let absoluteCost = +$costFull.innerText;
     $costFull.innerText = (absoluteCost - 3000).toString();
-    localStorage.setItem("Cena Końcowa", absoluteCost - 3000);
+    localStorage.setItem("finalPrice", absoluteCost - 3000);
   }
 });
 
 $warrancyButton.addEventListener("click", () => {
   if ($warrancyButton.innerText === "+") {
-    $warrancyDiv.style.backgroundColor = "gray";
+    $warrancyDiv.style.backgroundColor = "grey";
     $warrancyButton.innerText = "-";
-    localStorage.setItem("Gwarancja", "Tak");
-    var absoluteCost = +$costFull.innerText;
+    localStorage.setItem("warrancy", "yes");
+    let absoluteCost = +$costFull.innerText;
     $costFull.innerText = (absoluteCost + 5000).toString();
-    localStorage.setItem("Cena Końcowa", absoluteCost + 5000);
+    localStorage.setItem("finalPrice", absoluteCost + 5000);
   } else {
     $warrancyDiv.style.backgroundColor = "white";
     $warrancyButton.innerText = "+";
-    localStorage.setItem("Gwarancja", "");
-    var absoluteCost = +$costFull.innerText;
+    localStorage.setItem("warrancy", "");
+    let absoluteCost = +$costFull.innerText;
     $costFull.innerText = (absoluteCost - 5000).toString();
-    localStorage.setItem("Cena Końcowa", absoluteCost - 5000);
+    localStorage.setItem("finalPrice", absoluteCost - 5000);
   }
 });
 
 $leasing.addEventListener("click", () => {
-  localStorage.setItem("Leasing", "Tak");
-  localStorage.setItem("Gotówka", "");
+  localStorage.setItem("leasing", "yes");
+  localStorage.setItem("cash", "");
 });
 
 $cash.addEventListener("click", () => {
-  localStorage.setItem("Gotówka", "Tak");
-  localStorage.setItem("Leasing", "");
+  localStorage.setItem("cash", "yes");
+  localStorage.setItem("leasing", "");
 });
 
 function validateInput() {
@@ -117,172 +167,170 @@ function validateInput() {
 }
 
 function validateNameInput(input) {
-  var condition = /^[a-zA-Z]+\s[a-zA-Z]+$/;
+  let condition = /^[a-zA-Z]+\s[a-zA-Z]+$/;
 
   return condition.test(input);
 }
 
-var Cars = [
+let cars = [
   {
-    img: "https://ocdn.eu/pulscms-transforms/1/4tBk9kqTURBXy9jZDY0YTIzMTI4MWVkOTgxYTkzNjZhMGNlNjY2OTQ3Yy5qcGVnkpUDzQEMzOzNBdzNA0yTBc0EsM0CpN4AAqEwBaExAA",
-    marka: "Audi",
+    img: "https://img.autoabc.lv/audi-a6/audi-a6_2018_Universals_21102760701_12.jpg",
+    brand: "Audi",
     model: "A6",
-    rocznik: 2018,
-    przebieg: "120 000km",
-    moc: "280KM",
-    cena: 50000,
+    productionDate: 2018,
+    mileage: "120 000km",
+    power: "280KM",
+    cost: 50000,
   },
   {
     img: "https://auto-planeta.pl/wp-content/uploads/2023/08/Mercedes-Benz-E-Class-11-aspect-ratio-1920-1024.jpg",
-    marka: "Mercedes",
+    brand: "Mercedes",
     model: "E",
-    rocznik: 2019,
-    przebieg: "60 000km",
-    moc: "320KM",
-    cena: 110000,
+    productionDate: 2019,
+    mileage: "60 000km",
+    power: "320KM",
+    cost: 110000,
   },
   {
     img: "https://www.auto-data.net/images/f109/BMW-X5-E70.jpg",
-    marka: "BMW",
+    brand: "BMW",
     model: "X5",
-    rocznik: 2009,
-    przebieg: "250 000km",
-    moc: "260KM",
-    cena: 30000,
+    productionDate: 2009,
+    mileage: "250 000km",
+    power: "260KM",
+    cost: 30000,
   },
   {
     img: "https://www.motortrend.com/uploads/sites/10/2019/01/2019-toyota-rav4-xle-premium-suv-angular-front.png?fit=around%7C875:492",
-    marka: "Toyota",
+    brand: "Toyota",
     model: "RAV 4",
-    rocznik: 2018,
-    przebieg: "120 000km",
-    moc: "220KM",
-    cena: 46000,
+    productionDate: 2018,
+    mileage: "120 000km",
+    power: "220KM",
+    cost: 46000,
   },
   {
     img: "https://i.ytimg.com/vi/9wWGqcwLHEw/maxresdefault.jpg",
-    marka: "Audi",
+    brand: "Audi",
     model: "R8",
-    rocznik: 2022,
-    przebieg: "10 000km",
-    moc: "560KM",
-    cena: 360000,
+    productionDate: 2022,
+    mileage: "10 000km",
+    power: "560KM",
+    cost: 360000,
   },
   {
     img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpI_H_kZZssh0eNWsSaN5Km01pu_heNVfGNFJCKZb1PA&s",
-    marka: "Mazda",
+    brand: "Mazda",
     model: "MX-5",
-    rocznik: 2018,
-    przebieg: "45 000km",
-    moc: "220KM",
-    cena: 80000,
+    productionDate: 2018,
+    mileage: "45 000km",
+    power: "220KM",
+    cost: 80000,
   },
   {
     img: "https://thumbs.img-sprzedajemy.pl/1000x901c/95/a1/0a/renault-kadjar-2020-133-tce-salon-polska-swietokrzyskie-574883423.jpg",
-    marka: "Renault",
+    brand: "Renault",
     model: "Kadjar",
-    rocznik: 2020,
-    przebieg: "81 000km",
-    moc: "150KM",
-    cena: 67000,
+    productionDate: 2020,
+    mileage: "81 000km",
+    power: "150KM",
+    cost: 67000,
   },
   {
     img: "https://e.allegroimg.com/s1024/0c589f/8b2056ae47399215ca78ff184f3e",
-    marka: "Ford",
+    brand: "Ford",
     model: "Mondeo",
-    rocznik: 2015,
-    przebieg: "160 000km",
-    moc: "140",
-    cena: 24000,
+    productionDate: 2015,
+    mileage: "160 000km",
+    power: "140",
+    cost: 24000,
   },
   {
     img: "https://www.autocentrum.pl/NjdlZmIuYQsFDixeZg5sH0ZWeEIoFmMMDQA_Qi4UIgYBHiNAOR0hHgtDbwktQH5cVV9vVXoUfgxSVTkIfUN5DwIOdAc5EmwX",
-    marka: "Ford",
+    brand: "Ford",
     model: "Fiesta",
-    rocznik: 2021,
-    przebieg: "80 000km",
-    moc: "135KM",
-    cena: 45000,
+    productionDate: 2021,
+    mileage: "80 000km",
+    power: "135KM",
+    cost: 45000,
   },
   {
     img: "https://ireland.apollo.olxcdn.com/v1/files/8lk7u81b8e0x1-PL/image;s=1800x1200",
-    marka: "Fiat",
+    brand: "Fiat",
     model: "Punto",
-    rocznik: 2009,
-    przebieg: "300 000km",
-    moc: "110KM",
-    cena: 18000,
+    productionDate: 2009,
+    mileage: "300 000km",
+    power: "110KM",
+    cost: 18000,
   },
   {
     img: "https://hips.hearstapps.com/hmg-prod/images/2020-porsche-macan-gts-460-hdr-1598445949.jpg?crop=0.468xw:0.524xh;0.0913xw,0.476xh&resize=768:*",
-    marka: "Porsche",
+    brand: "Porsche",
     model: "Macan",
-    rocznik: 2021,
-    przebieg: "40 000km",
-    moc: "340KM",
-    cena: 210000,
+    productionDate: 2021,
+    mileage: "40 000km",
+    power: "340KM",
+    cost: 210000,
   },
   {
     img: "https://i.gremicdn.pl/image/free/5ac0378ac7ed04f8d4e4536951234e09/?t=crop:1599:991:nowe:0:88,resize:fill:1200:675,enlarge:1",
-    marka: "Porsche",
+    brand: "Porsche",
     model: "911",
-    rocznik: 2021,
-    przebieg: "12 000km",
-    moc: "440KM",
-    cena: 300000,
+    productionDate: 2021,
+    mileage: "12 000km",
+    power: "440KM",
+    cost: 300000,
   },
 ];
 
 function addDataToLastPage() {
-  var currentCarData = JSON.parse(localStorage.getItem("CarData"));
-  $thanksText.innerText = `${currentCarData.marka} ${currentCarData.model}, ${currentCarData.rocznik} \n ${currentCarData.przebieg} ${currentCarData.moc}`;
-  $autoComingOn.innerText = localStorage.getItem("Data Odbioru");
+  let currentCarData = JSON.parse(localStorage.getItem("carData"));
+  $thanksText.innerText = `${currentCarData.brand} ${currentCarData.model}, ${currentCarData.productionDate} \n ${currentCarData.mileage} ${currentCarData.power}`;
+  $autoComingOn.innerText = localStorage.getItem("pickupDate");
   $pln.innerText =
-    localStorage.getItem("Cena Końcowa").toString() +
+    localStorage.getItem("finalPrice").toString() +
     " PLNÓW" +
     " i zapłacisz" +
-    (localStorage.getItem("Gotówka") === "Tak"
-      ? " gotówką"
-      : " poprzez leasing");
+    (localStorage.getItem("cash") === "yes" ? " gotówką" : " poprzez leasing");
 
-  var imgLastPage = document.getElementById("lastPageImg");
-  var imgPath = JSON.parse(localStorage.getItem("CarData"));
+  let imgLastPage = document.getElementById("lastPageImg");
+  let imgPath = JSON.parse(localStorage.getItem("carData"));
   imgLastPage.src = imgPath.img;
 }
 
 function appendCarList() {
-  Cars.forEach((car) => {
+  cars.forEach((car) => {
     let listItem = document.createElement("li");
 
     let img = document.createElement("img");
     img.src = car.img;
     img.alt = "samochód";
 
-    var marka = document.createElement("p");
-    marka.innerText = car.marka;
+    let brand = document.createElement("p");
+    brand.innerText = car.brand;
 
-    var model = document.createElement("p");
+    let model = document.createElement("p");
     model.innerText = car.model;
 
-    var rocznik = document.createElement("p");
-    rocznik.innerText = car.rocznik;
+    let productionDate = document.createElement("p");
+    productionDate.innerText = car.productionDate;
 
-    var przebieg = document.createElement("p");
-    przebieg.innerText = car.przebieg;
+    let mileage = document.createElement("p");
+    mileage.innerText = car.mileage;
 
-    var moc = document.createElement("p");
-    moc.innerText = car.moc;
+    let power = document.createElement("p");
+    power.innerText = car.power;
 
-    var cena = document.createElement("p");
-    cena.innerText = car.cena;
+    let cost = document.createElement("p");
+    cost.innerText = car.cost;
 
     listItem.appendChild(img);
-    listItem.appendChild(marka);
+    listItem.appendChild(brand);
     listItem.appendChild(model);
-    listItem.appendChild(rocznik);
-    listItem.appendChild(przebieg);
-    listItem.appendChild(moc);
-    listItem.appendChild(cena);
+    listItem.appendChild(productionDate);
+    listItem.appendChild(mileage);
+    listItem.appendChild(power);
+    listItem.appendChild(cost);
 
     $carList.appendChild(listItem);
   });
@@ -294,74 +342,73 @@ $carList.addEventListener("click", (e) => {
     e.target.nodeName === "P" ||
     e.target.nodeName === "IMG"
   ) {
-    localStorage.setItem("Currently Displayed Div", "FormDiv");
+    localStorage.setItem("currentlyDisplayedDiv", "formDiv");
     $carListDiv.style.display = "none";
     $formDiv.style.display = "block";
-    var listItem = e.target.closest("li");
+    let listItem = e.target.closest("li");
 
     if (listItem) {
-      var index = Array.from(listItem.parentElement.children).indexOf(listItem);
-      localStorage.setItem("CarData", JSON.stringify(Cars[index]));
+      let index = Array.from(listItem.parentElement.children).indexOf(listItem);
+      localStorage.setItem("carData", JSON.stringify(cars[index]));
     }
 
-    if (localStorage.getItem("CarData") !== "") {
-      var currentCarData = JSON.parse(localStorage.getItem("CarData"));
-      $costFull.innerText = currentCarData.cena.toString();
-      localStorage.setItem("Cena Końcowa", $costFull.innerText);
-      $chosenModel.innerText = `${currentCarData.marka} ${currentCarData.model}, ${currentCarData.rocznik} \n ${currentCarData.przebieg} ${currentCarData.moc}`;
+    if (localStorage.getItem("carData") !== "") {
+      let currentCarData = JSON.parse(localStorage.getItem("carData"));
+      $costFull.innerText = currentCarData.cost.toString();
+      localStorage.setItem("finalPrice", $costFull.innerText);
+      $chosenModel.innerText = `${currentCarData.brand} ${currentCarData.model}, ${currentCarData.productionDate} \n ${currentCarData.mileage} ${currentCarData.power}`;
     }
   }
 });
 
 function createPickupDate() {
-  let today = new Date();
-  var twoWeeksFromNow = new Date(today);
+  let twoWeeksFromNow = new Date();
   twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
   $dateOption.value = twoWeeksFromNow.toISOString().split("T")[0];
   $dateOption.innerText = twoWeeksFromNow.toDateString();
 }
 
 $formInputName.addEventListener("change", () => {
-  localStorage.setItem("Imię i Nazwisko", $formInputName.value);
+  localStorage.setItem("nameAndSurname", $formInputName.value);
 });
 $destinationInput.addEventListener("change", () => {
-  localStorage.setItem("Miejsce Odbioru", $destinationInput.value);
+  localStorage.setItem("pickupLocation", $destinationInput.value);
 });
 $dateInput.addEventListener("change", () => {
-  localStorage.setItem("Data Odbioru", $dateInput.value);
+  localStorage.setItem("pickupDate", $dateInput.value);
 });
 
 function showSectionOnReloadPage() {
-  var currentCarData = JSON.parse(localStorage.getItem("CarData"));
-  switch (localStorage.getItem("Currently Displayed Div")) {
-    case "FormDiv":
+  let currentCarData = JSON.parse(localStorage.getItem("carData"));
+  switch (localStorage.getItem("currentlyDisplayedDiv")) {
+    case "formDiv":
       $carListDiv.style.display = "none";
       $formDiv.style.display = "block";
-      localStorage.getItem("Imię i Nazwisko") !== ""
-        ? ($formInputName.value = localStorage.getItem("Imię i Nazwisko"))
+      localStorage.getItem("nameAndSurname") !== ""
+        ? ($formInputName.value = localStorage.getItem("nameAndSurname"))
         : ($formInputName.value = "");
-      localStorage.getItem("Miejsce Odbioru") !== ""
-        ? ($destinationInput.value = localStorage.getItem("Miejsce Odbioru"))
+      localStorage.getItem("pickupLocation") !== ""
+        ? ($destinationInput.value = localStorage.getItem("pickupLocation"))
         : ($destinationInput.value = "");
-      localStorage.getItem("Data Odbioru") !== ""
-        ? ($dateInput.value = localStorage.getItem("Data Odbioru"))
+      localStorage.getItem("pickupDate") !== ""
+        ? ($dateInput.value = localStorage.getItem("pickupDate"))
         : ($dateInput.value = "");
-      $leasing.checked = localStorage.getItem("Leasing") === "Tak";
-      $cash.checked = localStorage.getItem("Gotówka") === "Tak";
+      $leasing.checked = localStorage.getItem("leasing") === "yes";
+      $cash.checked = localStorage.getItem("cash") === "yes";
       $tiresDiv.style.backgroundColor =
-        localStorage.getItem("Opony") === "Tak" ? "gray" : "white";
+        localStorage.getItem("tires") === "yes" ? "grey" : "white";
       $tiresButton.innerText =
-        localStorage.getItem("Opony") === "Tak" ? "-" : "+";
+        localStorage.getItem("tires") === "yes" ? "-" : "+";
       $warrancyDiv.style.backgroundColor =
-        localStorage.getItem("Gwarancja") === "Tak" ? "gray" : "white";
+        localStorage.getItem("warrancy") === "yes" ? "grey" : "white";
       $warrancyButton.innerText =
-        localStorage.getItem("Gwarancja") === "Tak" ? "-" : "+";
-      localStorage.getItem("Cena Końcowa") !== ""
-        ? ($costFull.innerText = localStorage.getItem("Cena Końcowa"))
+        localStorage.getItem("warrancy") === "yes" ? "-" : "+";
+      localStorage.getItem("finalPrice") !== ""
+        ? ($costFull.innerText = localStorage.getItem("finalPrice"))
         : ($costFull.innerText = "");
-      $chosenModel.innerText = `${currentCarData.marka} ${currentCarData.model}, ${currentCarData.rocznik} \n ${currentCarData.przebieg} ${currentCarData.moc}`;
+      $chosenModel.innerText = `${currentCarData.brand} ${currentCarData.model}, ${currentCarData.productionDate} \n ${currentCarData.mileage} ${currentCarData.power}`;
       break;
-    case "ThanksDiv":
+    case "thanksDiv":
       $carListDiv.style.display = "none";
       $formDiv.style.display = "none";
       $thanksDiv.style.display = "block";

@@ -20,15 +20,15 @@ header:hover {
   background-color: hsla(0, 100%, 50%, 1);
 }
 
-#formaPłatności p {
+#paymentOption p {
   margin-bottom: 0;
 }
 
-#formaPłatności #costFull {
+#paymentOption #costFull {
   margin-bottom: 10px;
 }
 
-#formaPłatności label:last-of-type {
+#paymentOption label:last-of-type {
   margin-bottom: 10px;
 }
 
@@ -51,9 +51,8 @@ header:hover {
   margin-left: 20px;
 }
 
-h1,
-.h1 {
-  padding-left: 20px;
+#accessoryParagraph {
+  padding-left: 16px;
 }
 
 .accessory p {
@@ -80,18 +79,21 @@ h1,
   overflow: auto;
 }
 
-#goBack:hover {
+#goBack:hover,
+#submit:hover {
   cursor: pointer;
 }
 
 #submit {
   margin: 20px;
-  padding: 0;
+  padding: 15px 30px;
   position: relative;
   left: 60vw;
+  font-size: 2rem;
 }
 
 #goBack {
+  font-size: 2rem;
   display: inline-flex;
   margin: 20px;
   padding: 0px;
@@ -101,11 +103,11 @@ h1,
   list-style-type: none;
 }
 
-#formaPłatności {
+#paymentOption {
   padding: 15px;
 }
 
-#formaPłatności p {
+#paymentOption p {
   display: flex;
 }
 
@@ -170,8 +172,7 @@ li img {
   font-size: larger;
 }
 
-h2,
-.h2 {
+h2 {
   display: flex;
   text-align: center;
 }

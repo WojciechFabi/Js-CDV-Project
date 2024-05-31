@@ -13,8 +13,8 @@
     </header>
     <div class="col-sm-12" id="carListDiv">
       <div class="col-sm-6">
-        <label for="szukaj">Marka</label>
-        <input type="text" name="szukaj" id="" />
+        <label for="search">Marka</label>
+        <input type="text" name="search" id="search" />
       </div>
       <hr />
       <div class="col">
@@ -26,11 +26,11 @@
     </div>
     <div id="formDiv" style="display: none">
       <form action="" id="Form">
-        <div class="col-sm-12" id="formaPłatności">
-          <input type="radio" name="formaPłatności" id="leasing" />
+        <div class="col-sm-12" id="paymentOption">
+          <input type="radio" name="paymentOption" id="leasing" />
           <label for="leasing">Leasing</label>
           <br />
-          <input type="radio" name="formaPłatności" id="cash" />
+          <input type="radio" name="paymentOption" id="cash" />
           <label for="cash">Gotówka</label>
           <div id="PLN">
             <p>Cena całkowita:</p>
@@ -65,7 +65,7 @@
         </div>
         <div class="col">
           <hr />
-          <h1>Akcesoria</h1>
+          <p id="accessoryParagraph">Akcesoria</p>
 
           <div class="accessory">
             <p id="tiresDiv">Opony Zimowe 3000 zł</p>
@@ -81,28 +81,26 @@
 
           <p id="goBack" type="button"><span> &lt </span>Powrót do Wyboru</p>
           <button id="submit" type="submit">Zakup</button>
-          <h2 id="formError" style="display: none">
-            Źle wypełniony formularz !
-          </h2>
+          <h2 id="formError" style="display: none"></h2>
         </div>
       </form>
     </div>
     <div id="thanksDiv" style="display: none">
-      <h1>
+      <div>
         <img src="" alt="" id="lastPageImg" />
         Dziękujemy za zakup
         <p id="thanks"></p>
-      </h1>
+      </div>
       <hr />
-      <h1>
+      <div>
         Auto zostanie dostarczone
         <p id="autoComingOn"></p>
-      </h1>
+      </div>
       <hr />
-      <h1>
+      <div>
         Wydasz na to
         <p id="pln"></p>
-      </h1>
+      </div>
     </div>
   </body>
 </html>
