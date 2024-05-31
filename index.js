@@ -299,8 +299,8 @@ function addDataToLastPage() {
   imgLastPage.src = imgPath.img;
 }
 
-function appendCarList(cars) {
-  cars.forEach((cars) => {
+function appendCarList(car) {
+  car.forEach((cars) => {
     let listItem = document.createElement("li");
 
     let img = document.createElement("img");
