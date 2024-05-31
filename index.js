@@ -22,6 +22,7 @@ const $autoComingOn = document.getElementById("autoComingOn");
 const $pln = document.getElementById("pln");
 const $header = document.getElementById("header");
 const $dateOption = document.getElementById("dateOption");
+const $searchInput = document.getElementById("search");
 
 $form.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -298,31 +299,31 @@ function addDataToLastPage() {
   imgLastPage.src = imgPath.img;
 }
 
-function appendCarList() {
-  cars.forEach((car) => {
+function appendCarList(cars) {
+  cars.forEach((cars) => {
     let listItem = document.createElement("li");
 
     let img = document.createElement("img");
-    img.src = car.img;
+    img.src = cars.img;
     img.alt = "samochód";
 
     let brand = document.createElement("p");
-    brand.innerText = car.brand;
+    brand.innerText = cars.brand;
 
     let model = document.createElement("p");
-    model.innerText = car.model;
+    model.innerText = cars.model;
 
     let productionDate = document.createElement("p");
-    productionDate.innerText = car.productionDate;
+    productionDate.innerText = cars.productionDate;
 
     let mileage = document.createElement("p");
-    mileage.innerText = car.mileage;
+    mileage.innerText = cars.mileage;
 
     let power = document.createElement("p");
-    power.innerText = car.power;
+    power.innerText = cars.power;
 
     let cost = document.createElement("p");
-    cost.innerText = car.cost;
+    cost.innerText = cars.cost;
 
     listItem.appendChild(img);
     listItem.appendChild(brand);
@@ -421,9 +422,29 @@ function showSectionOnReloadPage() {
   }
 }
 
+const filterCars = (searchTerm) => {
+  searchTerm = searchTerm.toLowerCase();
+  return cars.filter(
+    (car) =>
+      car.brand.toLowerCase().includes(searchTerm) ||
+      car.model.toLowerCase().includes(searchTerm) ||
+      car.productionDate.toString().includes(searchTerm) ||
+      car.mileage.toLowerCase().includes(searchTerm) ||
+      car.power.toLowerCase().includes(searchTerm) ||
+      car.cost.toString().includes(searchTerm)
+  );
+};
+
+$searchInput.addEventListener("input", () => {
+  let searchTerm = $searchInput.value;
+  let newCarsList = filterCars(searchTerm);
+  $carList.innerHTML = "";
+  appendCarList(newCarsList);
+});
+
 $header.addEventListener("click", goBack);
 
 createPickupDate();
-appendCarList();
+appendCarList(cars);
 
 window.addEventListener("load", showSectionOnReloadPage);
