@@ -299,31 +299,31 @@ function addDataToLastPage() {
   imgLastPage.src = imgPath.img;
 }
 
-function appendCarList(car) {
-  car.forEach((cars) => {
+function appendCarList(cars) {
+  cars.forEach((car) => {
     let listItem = document.createElement("li");
 
     let img = document.createElement("img");
-    img.src = cars.img;
+    img.src = car.img;
     img.alt = "samochód";
 
     let brand = document.createElement("p");
-    brand.innerText = cars.brand;
+    brand.innerText = car.brand;
 
     let model = document.createElement("p");
-    model.innerText = cars.model;
+    model.innerText = car.model;
 
     let productionDate = document.createElement("p");
-    productionDate.innerText = cars.productionDate;
+    productionDate.innerText = car.productionDate;
 
     let mileage = document.createElement("p");
-    mileage.innerText = cars.mileage;
+    mileage.innerText = car.mileage;
 
     let power = document.createElement("p");
-    power.innerText = cars.power;
+    power.innerText = car.power;
 
     let cost = document.createElement("p");
-    cost.innerText = cars.cost;
+    cost.innerText = car.cost;
 
     listItem.appendChild(img);
     listItem.appendChild(brand);
